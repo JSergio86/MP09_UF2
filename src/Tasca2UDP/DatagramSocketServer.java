@@ -6,56 +6,87 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 
 public class DatagramSocketServer {
-    DatagramSocket socket;
-    InetAddress clientIP;
-    SecretNum secretNum = new SecretNum();
-    int intentos = 0;
+    /**
+     * Servidor que tria un número aleatòri entre 1 i max,
+     * * i el ClientAdivinaUDP.java l'ha d'encertar. La Comunicació és UDP a través del port 5556
+     * * Accepta varis clients però quan un client guanya es tanca la comunicació i el client que no ha guanyat
+     * * ha d'interpretar pel temps d'espera sense resposta, que ha perdut
+     * *
+     * *	Espera rebre un integer (4 bytes)
+     * * La classe SecretNum és qui s'encarrega d'avaluar l'enter rebut:
+     * * 0 -> encertat i partida acabada
+     * * 1 -> El número pensat és més petit
+     * * 2 -> El número pensar és més gran
+     * *cd
+     **/
+        DatagramSocket socket;
+        int port, fi;
+        SecretNum ns;
+        boolean acabat;
 
-    //Instàciar el socket
-    public void init(int port) throws SocketException {
-        socket = new DatagramSocket(port);
-        secretNum.pensa(10);
-    }
+        public DatagramSocketServer(int port, int max) {
+            try {
+                socket = new DatagramSocket(port);
+                System.out.printf("Servidor obert pel port %d%n", port);
+            } catch (SocketException e) {
+                e.printStackTrace();
+            }
+            this.port = port;
+            ns = new SecretNum(max);
+            acabat = false;
+            fi = -1;
+        }
 
-    public void runServer() throws IOException {
-        byte [] receivingData = new byte[4];
-        byte [] sendingData;
+        public void runServer() throws IOException {
+            byte[] receivingData = new byte[4];
+            byte[] sendingData;
+            InetAddress clientIP;
+            int clientPort;
 
-        int clientPort;
+            //el servidor atén el port indefinidament
+            while (!acabat) {
 
-        while(true) {
-            DatagramPacket packet = new DatagramPacket(receivingData,4);
-            socket.receive(packet);
-            clientIP = packet.getAddress();
-            sendingData = processData(packet.getData(),packet.getLength());
-            //Llegim el port i l'adreça del client per on se li ha d'enviar la resposta
-            clientPort = packet.getPort();
-            packet = new DatagramPacket(sendingData,sendingData.length,clientIP,clientPort);
-            socket.send(packet);
+                //creació del paquet per rebre les dades
+                DatagramPacket packet = new DatagramPacket(receivingData, 4);
+                //espera de les dades
+                socket.receive(packet);
+                //processament de les dades rebudes i obtenció de la resposta
+                sendingData = processData(packet.getData(), packet.getLength());
+                //obtenció de l'adreça del client
+                clientIP = packet.getAddress();
+                //obtenció del port del client
+                clientPort = packet.getPort();
+                //creació del paquet per enviar la resposta
+                packet = new DatagramPacket(sendingData, sendingData.length,
+                        clientIP, clientPort);
+                //enviament de la resposta
+                socket.send(packet);
+            }
+            socket.close();
+        }
+
+        private byte[] processData(byte[] data, int length) {
+            int nombre = ByteBuffer.wrap(data).getInt();
+            System.out.println("rebut->" + nombre);
+            fi = ns.comprova(nombre);
+            if (fi == 0) acabat = true;
+            byte[] resposta = ByteBuffer.allocate(4).putInt(fi).array();
+            return resposta;
+        }
+
+        public static void main(String[] args) throws SocketException, IOException {
+            DatagramSocketServer sAdivina = new DatagramSocketServer(5556, 100);
+
+            try {
+                sAdivina.runServer();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            System.out.println("Fi Servidor");
+
+
         }
     }
-
-    //El server retorna al client el mateix missatge que li arriba però en majúscules
-    private byte[] processData(byte[] data, int lenght) {
-        int n = ByteBuffer.wrap(data).getInt();
-        byte[] missatge;
-
-            missatge = ByteBuffer.allocate(4).putInt(secretNum.comprova(n)).array();
-            return missatge;
-
-
-
-    }
-
-    public static void main(String[] args) {
-        DatagramSocketServer server = new DatagramSocketServer();
-        try {
-            server.init(5555);
-            server.runServer();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-}
