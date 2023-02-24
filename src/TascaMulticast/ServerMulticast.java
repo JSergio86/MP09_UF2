@@ -18,7 +18,7 @@ public class ServerMulticast {
         socket = new MulticastSocket(portValue);
         multicastIP = InetAddress.getByName(strIp);
         port = portValue;
-        palabras = new String[]{"La lluvia moja el pasto fresco.", "El perro ladra al amanecer a la noche dea.", "El café es mi bebida favorita.", "El mar es hermoso al atardecer.", "La música me hace sentir vivo.", "El viento mueve las hojas del árbol.", "La nieve cubre todo a su paso."};
+        palabras = new String[]{"La música es una expresión artística que puede transmitir emociones y sentimientos de una manera única.", "El perro ladra al amanecer a la noche dea.", "El café es mi bebida favorita.", "El mar es hermoso al atardecer.", "El aprendizaje continuo es fundamental para mantenernos actualizados y adaptarnos a los cambios constantes del mundo actual.", "El viento mueve las hojas del árbol.", "La nieve cubre todo a su paso."};
     }
 
     public void runServer() throws IOException {

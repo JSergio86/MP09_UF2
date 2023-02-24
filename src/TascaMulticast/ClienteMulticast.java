@@ -55,7 +55,10 @@ public class ClienteMulticast {
     protected boolean getData(byte[] data, int lenght) {
         boolean ret=true;
         String msg = new String(data,0,lenght);
-        System.out.println(msg);
+        String[] words = msg.split("\\s+");
+        if (words.length >= 8) {
+            System.out.println(msg);
+        }
 
         return ret;
     }
