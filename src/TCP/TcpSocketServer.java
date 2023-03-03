@@ -14,6 +14,7 @@ public class TcpSocketServer {
     Scanner sc = new Scanner(System.in);
     static final int PORT=9090;
     private boolean end=false;
+    SecretNum secretNum = new SecretNum(10);
 
     public void listen(){
         ServerSocket serverSocket=null;
@@ -64,21 +65,18 @@ public class TcpSocketServer {
 
     private String processData(String clientMessage) {
         if(clientMessage.equals("")){
-            System.out.println("Bienvenido");
-            return null;
+            return "Conexión establecida";
         }
+        else return secretNum.comprova(clientMessage);
 
-        else {
-            System.out.println("Cliente> "+clientMessage);
-            String resposta = sc.nextLine();
-            return resposta;
-        }
     }
 
     private boolean isFarewellMessage(String clientMessage) {
-        if(clientMessage.toLowerCase().equals("bye")){
-            return true;
-        }
+        try {
+            if(clientMessage.toLowerCase().equals("bye")){
+                return true;
+            }
+        } catch (Exception e){}
         return false;
     }
 

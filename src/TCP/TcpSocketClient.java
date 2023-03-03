@@ -11,7 +11,6 @@ import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
 public class TcpSocketClient {
 Scanner sc = new Scanner(System.in);
     public void connect(String address, int port) {
@@ -29,7 +28,7 @@ Scanner sc = new Scanner(System.in);
             while (continueConnected) {
                 serverData = in.readLine();
                 //processament de les dades rebudes i obtenció d'una nova petició
-                request =getRequest(serverData);
+                request = getRequest(serverData);
                 //enviament de la petició
                 out.println(request);//assegurem que acaba amb un final de línia
                 out.flush(); //assegurem que s'envia
@@ -48,14 +47,28 @@ Scanner sc = new Scanner(System.in);
     }
 
     private String getRequest(String serverData) {
-        if(serverData.equals("")){
-            System.out.println("Bienvenido");
-            return null;
-        }
-        else {
-            System.out.println("Server> " + serverData);
+        if(serverData.equals("Conexión establecida")){
+            System.out.println("Conexión establecida!");
+            System.out.println("Escribe un número: ");
             return sc.nextLine();
         }
+        if(serverData.equals("Correcte")){
+            System.out.println("Ha ganado");
+            return "bye";
+        }
+
+        else if(serverData.equals("Més petit")){
+            System.out.println("EL numero es más pequeño");
+            System.out.println("Vuelve a escribir otro número: ");
+            return sc.nextLine();
+        }
+
+        else{
+            System.out.println("El numero es más grande");
+            System.out.println("Vuelve a escribir otro número: ");
+            return sc.nextLine();
+        }
+
     }
 
     private boolean mustFinish(String request) {
