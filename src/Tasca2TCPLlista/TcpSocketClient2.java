@@ -9,7 +9,8 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-public class TcpSocketClient extends Thread {
+
+public class TcpSocketClient2 extends Thread {
     private String Nom;
     private Socket socket;
     private InputStream in;
@@ -18,7 +19,7 @@ public class TcpSocketClient extends Thread {
     private boolean continueConnected;
     private Llista llista;
 
-    private TcpSocketClient(String hostname, int port) {
+    private TcpSocketClient2(String hostname, int port) {
         try {
             socket = new Socket(InetAddress.getByName(hostname), port);
             in = socket.getInputStream();
@@ -101,12 +102,13 @@ public class TcpSocketClient extends Thread {
 
     public static void main(String[] args) {
         String jugador, ipSrv;
-        Scanner sip = new Scanner(System.in);
 
+        //Demanem la ip del servidor i nom del jugador
+        Scanner sip = new Scanner(System.in);
         System.out.println("Nom jugador:");
         jugador = sip.next();
 
-        TcpSocketClient clientTcp = new TcpSocketClient("localhost", 5558);
+        TcpSocketClient2 clientTcp = new TcpSocketClient2("localhost", 5558);
         clientTcp.Nom = jugador;
         clientTcp.start();
     }

@@ -42,10 +42,11 @@ public class ThreadSevidorAdivina_Obj implements Runnable {
                 Collections.sort(listaCliente);
                 HashSet<Integer> conjuntoCliente = new HashSet<>(listaCliente);
                 List<Integer> listaSinDuplicados = new ArrayList<>(conjuntoCliente);
+                llista = new Llista(llista.getNom(),listaSinDuplicados);
 
-
-
-
+                ObjectOutputStream objectOutputStream = new ObjectOutputStream(out);
+                objectOutputStream.writeObject(llista);
+                objectOutputStream.flush();
 
 
             }
