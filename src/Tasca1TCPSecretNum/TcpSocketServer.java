@@ -1,4 +1,4 @@
-package TCP;
+package Tasca1TCPSecretNum;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -14,7 +14,7 @@ public class TcpSocketServer {
     Scanner sc = new Scanner(System.in);
     static final int PORT=9090;
     private boolean end=false;
-    SecretNum secretNum = new SecretNum(10);
+    SecretNum secretNum = new SecretNum(1000);
 
     public void listen(){
         ServerSocket serverSocket=null;

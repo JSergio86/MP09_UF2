@@ -1,4 +1,4 @@
-package TCP;
+package Tasca1TCPSecretNum;
 
 public class SecretNum {
     /* Classe que genera numeros aleatoris per jugar a adivinar-los i els comprova
