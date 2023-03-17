@@ -9,8 +9,7 @@ import java.util.logging.Logger;
 public class SrvTcpAdivina_Obj {
     /* Servidor TCP que genera un número perquè ClientTcpAdivina_Obj.java jugui a encertar-lo
      * i on la comunicació dels diferents jugadors la gestionaran els Threads : ThreadServidorAdivina_Obj.java
-     * */
-
+     */
     private int port;
     private SecretNum ns;
     private Tauler t;
@@ -40,8 +39,11 @@ public class SrvTcpAdivina_Obj {
         }
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException, ClassNotFoundException {
         SrvTcpAdivina_Obj srv = new SrvTcpAdivina_Obj(5558);
         srv.listen();
+
+        ServerMulticast serverMulticast = new ServerMulticast(5558,"Hola");
+        serverMulticast.runServer();
     }
 }

@@ -10,7 +10,6 @@ import java.util.logging.Logger;
 
 public class ClientTcpAdivina_Obj extends Thread {
     /* CLient TCP que ha endevinar un número pensat per SrvTcpAdivina_Obj.java */
-
     private String Nom;
     private Socket socket;
     private InputStream in;
@@ -68,7 +67,6 @@ public class ClientTcpAdivina_Obj extends Thread {
                     e.printStackTrace();
                 }
             }
-
 
         }
 

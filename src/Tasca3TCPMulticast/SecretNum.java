@@ -4,7 +4,6 @@ public class SecretNum {
     /* Classe que genera numeros aleatoris per jugar a adivinar-los i els comprova
      * tant si rep un numero o una string.
      */
-
     private int num;
 
     public SecretNum() {
@@ -32,7 +31,6 @@ public class SecretNum {
         else if(num<n) return "Més petit";
         else return "Més gran";
     }
-
 
     public int getNum() {
         return num;
